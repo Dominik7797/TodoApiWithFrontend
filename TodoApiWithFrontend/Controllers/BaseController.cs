@@ -28,7 +28,7 @@ namespace TodoApiWithFrontend.Controllers
         }
 
         // GET: api/Base/5
-        [HttpGet("{id}")]
+        [HttpGet("/api/todos/{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -37,13 +37,41 @@ namespace TodoApiWithFrontend.Controllers
             {
                 return NotFound();
             }
-
             return todoItem;
+        }
+
+        [HttpPut("/api/todos/{id}/toggle")]
+        public async Task<NoContentResult> ToggleTodoItem(long id)
+        {
+            foreach (var item in _context.TodoItems)
+            {
+                if (item.Id == id)
+                {
+                    item.IsComplete = !item.IsComplete;
+                    _context.Entry(item).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+            }
+            return NoContent();
+        }
+
+        [HttpPut("/api/todos/toggle-all")]
+        public async Task<NoContentResult> ToggleAllItem(long id)
+        {
+            foreach (var item in _context.TodoItems)
+            {
+                item.IsComplete = true;
+                _context.Entry(item).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            return NoContent();
+
         }
 
         // PUT: api/Base/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("/api/todos/{id}")]
         public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
         {
             if (id != todoItem.Id)
@@ -102,6 +130,32 @@ namespace TodoApiWithFrontend.Controllers
         private bool TodoItemExists(long id)
         {
             return _context.TodoItems.Any(e => e.Id == id);
+        }
+
+        [HttpDelete("/api/todos/completed")]
+        public NoContentResult ClearCompleted()
+        {
+            List<TodoItem> todoItemsToRemove = new List<TodoItem>();
+
+            foreach (var data in _context.TodoItems)
+            {
+
+                if (data.IsComplete)
+                {
+                    todoItemsToRemove.Add(data);
+                }
+            }
+
+            foreach (var item in todoItemsToRemove)
+            {
+                _context.TodoItems.Remove(item);
+            }
+
+            _context.SaveChangesAsync();
+
+            return NoContent();
+
+
         }
     }
 }
