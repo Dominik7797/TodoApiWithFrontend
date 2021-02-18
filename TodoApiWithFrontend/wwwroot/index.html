@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Vanilla JavaScript TODO app</title>
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+<body>
+    <section class="todoapp">
+        <header class="header">
+            <h1>todos</h1>
+            <label for="new-todo">Add new TODO</label>
+            <input id="new-todo" placeholder="What needs to be done?" autofocus="autofocus">
+        </header>
+        <section style="display:none" class="main">
+            <input id="toggle-all" type="checkbox" title="Toggle everything completed">
+            <label for="toggle-all" id="toggle-all-label">Toggle all</label>
+            <ul class="todo-list"></ul>
+        </section>
+        <footer class="footer">
+            <span class="todo-count"></span>
+            <div class="filters">
+                <a href='javascript:' id="filter_" class="selected">All</a>
+                <a href='javascript:' id="filter_active">Active</a>
+                <a href='javascript:' id="filter_complete">Completed</a>
+            </div>
+            <button class="clear-completed">Clear completed</button>
+        </footer>
+    </section>
+
+    <footer class="info">
+        <p>Double-click to edit a todo. Click the checkbox to their left to toggle completion</p>
+        <p>Based on <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/controller.js"></script>
+    <script src="js/view.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- templates -->
+    <template id="todoListItemTemplate">
+        <li>
+            <input class="toggle" type="checkbox" title="Toggle completed" />
+            <label></label>
+            <button class="destroy" title="Delete"></button>
+        </li>
+    </template>
+
+</body>
+</html>
