@@ -34,6 +34,11 @@ namespace TodoApiWithFrontend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            DefaultFilesOptions options = new DefaultFilesOptions();
+
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("index.html");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -50,6 +55,10 @@ namespace TodoApiWithFrontend
             {
                 endpoints.MapControllers();
             });
+
+            app.UseDefaultFiles(options);
+
+            app.UseStaticFiles();
         }
     }
 }
